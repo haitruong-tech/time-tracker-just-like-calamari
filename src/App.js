@@ -8,8 +8,13 @@ import TimeTracker from "./components/TimeTracker";
 
 function App() {
   const [input, setInput] = useState("");
-  const { todos, handleAddTodo, handleCheckTodo, handleDeleteTodo } =
-    useTodos();
+  const {
+    todos,
+    handleAddTodo,
+    handleCheckTodo,
+    handleDeleteTodo,
+    handleSwithPosition,
+  } = useTodos();
   const [tabs, setTabs] = useState([
     { id: TAB_IDS.TODOS, value: "Todos", active: true },
     { id: TAB_IDS.TIME_TRACKER, value: "Time Tracker", active: false },
@@ -45,7 +50,18 @@ function App() {
     switch (activeTabID) {
       case TAB_IDS.TODOS:
         return (
-          <>
+          <div
+            onDragOver={(e) => {
+              e.preventDefault();
+              e.dataTransfer.dropEffect = "move";
+            }}
+            onDrop={(e) => {
+              e.preventDefault();
+              const sourceTodoID = e.dataTransfer.getData("text/plain");
+              const targetTodoID = e.target?.parentNode?.id;
+              handleSwithPosition(sourceTodoID, targetTodoID ?? e.target.id);
+            }}
+          >
             <TodoList
               title="Todos:"
               todos={todos.filter((todo) => !todo.check)}
@@ -59,7 +75,7 @@ function App() {
               onTodoDelete={onTodoDelete}
               disableCheck
             />
-          </>
+          </div>
         );
       case TAB_IDS.TIME_TRACKER:
         return <TimeTracker />;

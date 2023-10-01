@@ -33,7 +33,43 @@ const useTodos = () => {
     persistTodos(todos.filter((todo) => todo.id !== todoID));
   };
 
-  return { todos, handleAddTodo, handleCheckTodo, handleDeleteTodo };
+  const handleSwithPosition = (sourceTodoID, targetTodoID) => {
+    const sourceTodo = todos.find(
+      (todo) => todo.id.toString() === sourceTodoID
+    );
+    const sourceTodoIndex = todos.findIndex(
+      (todo) => todo.id.toString() === sourceTodoID
+    );
+    const targetTodo = todos.find(
+      (todo) => todo.id.toString() === targetTodoID
+    );
+    const targetTodoIndex = todos.findIndex(
+      (todo) => todo.id.toString() === targetTodoID
+    );
+
+    if (!sourceTodo) return;
+    if (!targetTodo) {
+      if (targetTodoID === "Done:") sourceTodo.check = true;
+      else sourceTodo.check = true;
+      const newTodos = [...todos];
+      persistTodos(newTodos);
+      return;
+    }
+
+    const newTodos = [...todos];
+    sourceTodo.check = targetTodo.check;
+    newTodos.splice(sourceTodoIndex, 1);
+    newTodos.splice(targetTodoIndex, 0, sourceTodo);
+    persistTodos(newTodos);
+  };
+
+  return {
+    todos,
+    handleAddTodo,
+    handleCheckTodo,
+    handleDeleteTodo,
+    handleSwithPosition,
+  };
 };
 
 export default useTodos;
