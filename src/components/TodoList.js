@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import {
   RiArrowGoBackFill,
   RiCheckboxCircleFill,
@@ -14,22 +14,18 @@ function TodoList({ title, todos, onTodoCheck, onTodoDelete, disableCheck }) {
     sourceTodo.current = e.target;
   };
 
-  // useEffect(() => {
-  //   const listsContainer = document.getElementById("todo-lists-container")
-  //   listsContainer.addEventListener
-  // }, [])
-
   return (
     <ul
       id={title}
       aria-label={title}
-      className="before:content-[attr(aria-label)] before:text-lg before:font-medium before:mt-4 before:mb-2 before:block min-h-[56px]"
+      className="before:content-[attr(aria-label)] before:text-lg before:font-medium before:mt-4 before:mb-2 before:block"
     >
+      {todos.length === 0 && <p className="text-sm text-gray-400">No item to show</p>}
       {todos.map((todo) => (
         <li
           id={todo.id}
           key={todo.id}
-          className="flex items-center justify-between"
+          className="flex items-center justify-between cursor-pointer hover:bg-gray-200 duration-100"
           onDragStart={(e) => dragStartHandler(e, todo.id)}
           draggable
         >
