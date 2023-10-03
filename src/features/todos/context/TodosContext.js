@@ -1,12 +1,12 @@
-import { useEffect, useReducer, useState } from "react";
-import { LOCAL_STORAGE } from "../constants";
+import { useEffect, createContext, useReducer } from "react";
+import { LOCAL_STORAGE } from "../../../data/constants";
 
 const { TODOS } = LOCAL_STORAGE;
 
-const ADD_TODO = "ADD_TODO";
-const CHECK_TODO = "CHECK_TODO";
-const DELETE_TODO = "DELETE_TODO";
-const SWITCH_TODO_POSITION = "SWITCH_TODO_POSITION";
+const ADD_TODO = "todos/add_todo";
+const CHECK_TODO = "todos/check_todo";
+const DELETE_TODO = "todos/delete_todo";
+const SWITCH_TODO_POSITION = "todos/switch_todo_position";
 
 function todosReducer(todos, action) {
   switch (action.type) {
@@ -56,7 +56,10 @@ function todosReducer(todos, action) {
   }
 }
 
-const useTodos = () => {
+export const TodosContext = createContext(null);
+export const TodosActionsContext = createContext(null);
+
+function TodosProvider({ children }) {
   const [todos, dispatch] = useReducer(
     todosReducer,
     JSON.parse(localStorage.getItem(TODOS) ?? "[]")
@@ -85,13 +88,20 @@ const useTodos = () => {
     });
   };
 
-  return {
-    todos,
-    handleAddTodo,
-    handleCheckTodo,
-    handleDeleteTodo,
-    handleSwithPosition,
-  };
-};
+  return (
+    <TodosContext.Provider value={todos}>
+      <TodosActionsContext.Provider
+        value={{
+          handleAddTodo,
+          handleCheckTodo,
+          handleDeleteTodo,
+          handleSwithPosition,
+        }}
+      >
+        {children}
+      </TodosActionsContext.Provider>
+    </TodosContext.Provider>
+  );
+}
 
-export default useTodos;
+export default TodosProvider
