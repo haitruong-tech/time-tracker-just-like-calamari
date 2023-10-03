@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
-import { LOCAL_STORAGE } from "../constants";
+import { LOCAL_STORAGE } from "../data/constants";
 
 const SECOND = 1000;
 const MINUTE = 60 * SECOND;
