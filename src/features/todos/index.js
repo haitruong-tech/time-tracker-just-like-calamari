@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import TodoList from "./components/TodoList";
-import { TodosActionsContext, TodosContext } from "./context/TodosContext";
+import { TodosActionsContext, TodosContext } from "./contexts/TodosContext";
 
 function Todos({ onOpenModal }) {
   const todos = useContext(TodosContext);

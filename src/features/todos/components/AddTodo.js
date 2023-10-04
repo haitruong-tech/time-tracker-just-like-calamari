@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { TodosActionsContext } from "../context/TodosContext";
+import { TodosActionsContext } from "../contexts/TodosContext";
 import { v4 as uuidv4 } from "uuid";
 import { RiEdit2Fill } from "react-icons/ri";
 
