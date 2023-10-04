@@ -1,6 +1,5 @@
 import { useContext, useState } from "react";
 import { TodosActionsContext } from "../contexts/TodosContext";
-import { v4 as uuidv4 } from "uuid";
 import { RiEdit2Fill } from "react-icons/ri";
 
 function AddTodo() {
@@ -12,7 +11,7 @@ function AddTodo() {
       alert("Todo must not be empty!");
       return;
     }
-    handleAddTodo({ id: uuidv4(), value: input, check: false });
+    handleAddTodo({ value: input, check: false });
     setInput("");
   };
 

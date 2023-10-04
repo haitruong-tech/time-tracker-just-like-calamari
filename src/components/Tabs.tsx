@@ -1,7 +1,21 @@
 import clsx from "clsx";
 import { useState } from "react";
 
-function Tabs({ initialTab, tabs }) {
+interface Tab {
+  name: string;
+  component: React.ReactNode;
+}
+
+interface ITabs {
+  [key: string]: Tab;
+}
+
+interface TabsProps {
+  initialTab: string;
+  tabs: ITabs;
+}
+
+function Tabs({ initialTab, tabs }: TabsProps) {
   const [activeTab, setActiveTab] = useState(initialTab);
   return (
     <div>
@@ -11,7 +25,7 @@ function Tabs({ initialTab, tabs }) {
             key={tabID}
             className={clsx(
               {
-                "border-[#e5e7eb] bg-white": activeTab.toString() === tabID,
+                "!border-[#e5e7eb] bg-white": activeTab.toString() === tabID,
               },
               "py-1 px-2 cursor-pointer relative -bottom-[1px] border-t border-l border-r rounded-tl rounded-tr border-transparent"
             )}

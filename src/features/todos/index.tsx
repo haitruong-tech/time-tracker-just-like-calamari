@@ -4,11 +4,8 @@ import { TodosActionsContext, TodosContext } from "./contexts/TodosContext";
 
 function Todos({ onOpenModal }) {
   const todos = useContext(TodosContext);
-  const {
-    handleCheckTodo,
-    handleDeleteTodo,
-    handleSwithPosition,
-  } = useContext(TodosActionsContext);
+  const { handleCheckTodo, handleDeleteTodo, handleSwithPosition } =
+    useContext(TodosActionsContext);
 
   return (
     <div
@@ -19,8 +16,12 @@ function Todos({ onOpenModal }) {
       onDrop={(e) => {
         e.preventDefault();
         const sourceTodoID = e.dataTransfer.getData("text/plain");
-        const targetTodoID = e.target?.parentNode?.id;
-        handleSwithPosition(sourceTodoID, targetTodoID ?? e.target.id);
+        const targetTodoID = (e.target as HTMLElement)?.parentElement?.id;
+        console.log({ sourceTodoID, targetTodoID });
+        handleSwithPosition(
+          sourceTodoID,
+          targetTodoID ?? (e.target as HTMLElement).id
+        );
       }}
     >
       <TodoList

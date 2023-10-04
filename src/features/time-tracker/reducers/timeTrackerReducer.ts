@@ -1,12 +1,13 @@
 import { RECORD, UPDATE_PROGRESS } from "../constants";
+import type { Timer, TimerActions } from "../types/timer";
 
-export function timeTrackerReducer(timers, action) {
+export function timeTrackerReducer(timers: Timer[], action: TimerActions) {
   switch (action.type) {
     case RECORD: {
       const timer = timers.at(-1);
-      timer.duration += new Date() - action.payload.lastUpdate;
+      timer.duration += new Date().getTime() - action.payload.lastUpdate;
       timers.push({
-        startTime: new Date(),
+        startTime: new Date().toISOString(),
         duration: 0,
         purpose: action.payload.purpose,
       });
@@ -14,21 +15,16 @@ export function timeTrackerReducer(timers, action) {
     }
     case UPDATE_PROGRESS: {
       let timer = timers.at(-1);
-
       const currentDate = new Date();
       if (new Date(timer.startTime).getDate() < currentDate.getDate()) {
         timer = {
-          startTime: currentDate,
-          duration: new Date() - action.payload,
+          startTime: currentDate.toISOString(),
+          duration: new Date().getTime() - action.payload,
           purpose: timer.purpose,
         };
         timers.splice(0, timers.length, timer);
-      } else timer.duration += currentDate - action.payload;
-
+      } else timer.duration += currentDate.getTime() - action.payload;
       return;
-    }
-    default: {
-      throw Error("Unknown action: " + action.type);
     }
   }
 }
