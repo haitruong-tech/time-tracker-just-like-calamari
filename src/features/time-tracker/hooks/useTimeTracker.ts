@@ -14,7 +14,7 @@ function useTimeTracker() {
   const { currentDay, currentMonth, currentYear, initialState } =
     getTrackerState();
   const [timers, dispatch] = useImmerReducer(timeTrackerReducer, initialState);
-  const lastUpdate = useRef();
+  const lastUpdate = useRef<Date>();
   const pxPerMillSecond = 352 / DAY; // width of the time bar / time
 
   const persistLastUpdate = () => {
@@ -30,7 +30,7 @@ function useTimeTracker() {
       type: RECORD,
       payload: {
         purpose: PURPOSES.WORK,
-        lastUpdate: lastUpdate.current,
+        lastUpdate: lastUpdate.current.getTime(),
       },
     });
     lastUpdate.current = new Date();
@@ -43,7 +43,7 @@ function useTimeTracker() {
       type: RECORD,
       payload: {
         purpose: PURPOSES.BREAK,
-        lastUpdate: lastUpdate.current,
+        lastUpdate: lastUpdate.current.getTime(),
       },
     });
     lastUpdate.current = new Date();
@@ -66,7 +66,10 @@ function useTimeTracker() {
       new Date();
 
     function updateProgress() {
-      dispatch({ type: UPDATE_PROGRESS, payload: lastUpdate.current });
+      dispatch({
+        type: UPDATE_PROGRESS,
+        payload: lastUpdate.current.getTime(),
+      });
       lastUpdate.current = new Date();
       persistLastUpdate();
     }

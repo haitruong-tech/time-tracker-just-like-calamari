@@ -4,6 +4,16 @@ import {
   RiCheckboxCircleFill,
   RiDeleteBin7Fill,
 } from "react-icons/ri";
+import { Todo } from "../types/todo";
+
+interface TodoListProps {
+  title: string;
+  todos: Todo[];
+  onTodoCheck: (todo: Todo) => void;
+  onTodoDelete: (todo: Todo) => void;
+  disableCheck?: boolean;
+  openModal: (todo: Todo) => void;
+}
 
 function TodoList({
   title,
@@ -12,7 +22,7 @@ function TodoList({
   onTodoDelete,
   disableCheck,
   openModal,
-}) {
+}: TodoListProps) {
   const sourceTodo = useRef();
 
   const dragStartHandler = (e, todoID) => {

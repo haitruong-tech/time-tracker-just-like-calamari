@@ -1,6 +1,13 @@
 import { RiCloseLine } from "react-icons/ri";
 
-function Modal({ content, footer, header, closeModal }) {
+interface ModalProps {
+  content: React.ReactNode;
+  footer: React.ReactNode;
+  header: React.ReactNode;
+  closeModal: () => void;
+}
+
+function Modal({ content, footer, header, closeModal }: ModalProps) {
   return (
     <div className="bg-black/80 fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center">
       <div className="bg-gray-300 w-96">
