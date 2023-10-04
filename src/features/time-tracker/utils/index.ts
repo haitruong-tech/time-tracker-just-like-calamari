@@ -25,7 +25,7 @@ export const getTrackerState = (): TrackerState => {
         "{date}",
         `${currentYear}-${currentMonth}-${currentDay}`
       )
-    )
+    ) as string
   ) ?? [
     {
       startTime,
@@ -42,14 +42,20 @@ export const getTrackerState = (): TrackerState => {
   };
 };
 
-export function formatDuration(duration: number) {
-  const totalSecond = Math.floor(duration / 1000);
-  let hour: string | number = Math.floor(totalSecond / 60 / 60);
-  let minute: string | number = Math.floor((totalSecond / 60) % 60);
-  let second: string | number = Math.floor(totalSecond % 60);
+interface IFormatDurationReturnValue {
+  hour: string;
+  minute: string;
+  second: string;
+}
 
-  if (hour < 10) hour = `0${hour}`;
-  if (minute < 10) minute = `0${minute}`;
-  if (second < 10) second = `0${second}`;
-  return { hour, minute, second };
+export function formatDuration(duration: number): IFormatDurationReturnValue {
+  const totalSecond = Math.floor(duration / 1000);
+  const hour: number = Math.floor(totalSecond / 60 / 60);
+  const minute: number = Math.floor((totalSecond / 60) % 60);
+  const second: number = Math.floor(totalSecond % 60);
+
+  const sHour = hour < 10 ? `0${hour}` : `${hour}`;
+  const sMinute = minute < 10 ? `0${minute}` : `${minute}`;
+  const sSecond = second < 10 ? `0${second}` : `${second}`;
+  return { hour: sHour, minute: sMinute, second: sSecond };
 }

@@ -1,17 +1,20 @@
-import { current } from "immer";
 import {
   ADD_TODO,
   CHECK_TODO,
   DELETE_TODO,
   SWITCH_TODO_POSITION,
 } from "../constants";
-import { Todo, TodoActions } from "../types/todo";
+import { type Todo, type TodoActions } from "../types/todo";
 import { v4 as uuidv4 } from "uuid";
 
-export function todosReducer(todos: Todo[], action: TodoActions) {
+export function todosReducer(
+  todos: Todo[],
+  action: TodoActions
+): undefined | Todo[] {
   switch (action.type) {
     case ADD_TODO: {
-      return void todos.push({ ...action.payload, id: uuidv4() });
+      todos.push({ ...action.payload, id: uuidv4() });
+      return;
     }
     case CHECK_TODO: {
       return todos.map((todo) =>
@@ -30,8 +33,8 @@ export function todosReducer(todos: Todo[], action: TodoActions) {
         (todo) => todo.id.toString() === targetTodoID
       );
 
-      if (!sourceTodo) return;
-      if (!targetTodo) {
+      if (sourceTodo == null) return;
+      if (targetTodo == null) {
         if (targetTodoID === "Done:") sourceTodo.check = true;
         else if (targetTodoID === "Todos:") sourceTodo.check = true;
         return;

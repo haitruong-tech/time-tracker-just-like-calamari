@@ -1,9 +1,8 @@
-import { v4 as uuidv4 } from "uuid";
 import {
-  ADD_TODO,
-  CHECK_TODO,
-  DELETE_TODO,
-  SWITCH_TODO_POSITION,
+  type ADD_TODO,
+  type CHECK_TODO,
+  type DELETE_TODO,
+  type SWITCH_TODO_POSITION,
 } from "../constants";
 
 interface Todo {
@@ -12,7 +11,14 @@ interface Todo {
   id: string;
 }
 
-interface AddTodoActionPayload {
+interface ITodoActionsContext {
+  handleAddTodo: (todo: AddTodoActionPayload) => void;
+  handleCheckTodo: (todo: string) => void;
+  handleDeleteTodo: (todo: string) => void;
+  handleSwithPosition: (sourceTodoID: string, targetTodoID: string) => void;
+}
+
+export interface AddTodoActionPayload {
   value: string;
   check: boolean;
 }
@@ -33,8 +39,8 @@ interface DeleteTodoAction {
 }
 
 interface SwitchTodoActionPayload {
-  sourceTodoID: string
-  targetTodoID: string
+  sourceTodoID: string;
+  targetTodoID: string;
 }
 
 interface SwitchTodoAction {
@@ -42,4 +48,8 @@ interface SwitchTodoAction {
   payload: SwitchTodoActionPayload;
 }
 
-export type TodoActions = AddTodoAction | CheckTodoAction | DeleteTodoAction | SwitchTodoAction;
+export type TodoActions =
+  | AddTodoAction
+  | CheckTodoAction
+  | DeleteTodoAction
+  | SwitchTodoAction;

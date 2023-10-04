@@ -4,7 +4,7 @@ import {
   RiCheckboxCircleFill,
   RiDeleteBin7Fill,
 } from "react-icons/ri";
-import { Todo } from "../types/todo";
+import { type Todo } from "../types/todo";
 
 interface TodoListProps {
   title: string;
@@ -22,21 +22,30 @@ function TodoList({
   onTodoDelete,
   disableCheck,
   openModal,
-}: TodoListProps) {
-  const sourceTodo = useRef();
+}: TodoListProps): JSX.Element {
+  const sourceTodo = useRef<EventTarget>();
 
-  const dragStartHandler = (e, todoID) => {
+  const dragStartHandler = (
+    e: React.DragEvent<HTMLLIElement>,
+    todoID: string
+  ): void => {
     e.dataTransfer.dropEffect = "move";
     e.dataTransfer.setData("text/plain", todoID);
     sourceTodo.current = e.target;
   };
 
-  const handleCheckTodo = (e, todo) => {
+  const handleCheckTodo = (
+    e: React.MouseEvent<SVGElement>,
+    todo: Todo
+  ): void => {
     e.stopPropagation();
     onTodoCheck(todo);
   };
 
-  const handleDeleteTodo = (e, todo) => {
+  const handleDeleteTodo = (
+    e: React.MouseEvent<SVGElement>,
+    todo: Todo
+  ): void => {
     e.stopPropagation();
     onTodoDelete(todo);
   };
@@ -55,27 +64,37 @@ function TodoList({
           id={todo.id}
           key={todo.id}
           className="flex items-center justify-between cursor-pointer hover:bg-gray-200 duration-100"
-          onDragStart={(e) => dragStartHandler(e, todo.id)}
-          onClick={() => openModal(todo)}
+          onDragStart={(e) => {
+            dragStartHandler(e, todo.id);
+          }}
+          onClick={() => {
+            openModal(todo);
+          }}
           draggable
         >
           <span>{todo.value}</span>
           <div className="flex gap-x-2 items-center">
-            {!disableCheck && (
+            {!(disableCheck ?? false) && (
               <RiCheckboxCircleFill
                 className="text-green-600 cursor-pointer font-bold text-xl"
-                onClick={(e) => handleCheckTodo(e, todo)}
+                onClick={(e) => {
+                  handleCheckTodo(e, todo);
+                }}
               />
             )}
-            {disableCheck && (
+            {(disableCheck ?? false) && (
               <RiArrowGoBackFill
                 className="text-green-600 cursor-pointer font-bold text-xl"
-                onClick={(e) => handleCheckTodo(e, todo)}
+                onClick={(e) => {
+                  handleCheckTodo(e, todo);
+                }}
               />
             )}
             <RiDeleteBin7Fill
               className="text-red-600 cursor-pointer text-xl"
-              onClick={(e) => handleDeleteTodo(e, todo)}
+              onClick={(e) => {
+                handleDeleteTodo(e, todo);
+              }}
             />
           </div>
         </li>

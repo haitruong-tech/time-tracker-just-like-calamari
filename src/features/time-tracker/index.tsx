@@ -3,9 +3,9 @@ import useTimeTracker from "./hooks/useTimeTracker";
 import { PURPOSES } from "./constants";
 import { formatDuration } from "./utils";
 
-function TimeTracker() {
+function TimeTracker(): JSX.Element {
   const { pxPerMillSecond, timers, work, takeBreak } = useTimeTracker();
-  const { hour, minute, second } = formatDuration(timers.at(-1).duration);
+  const { hour, minute, second } = formatDuration(timers.at(-1)?.duration ?? 0);
 
   return (
     <div>

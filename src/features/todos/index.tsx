@@ -1,8 +1,13 @@
 import { useContext } from "react";
 import TodoList from "./components/TodoList";
 import { TodosActionsContext, TodosContext } from "./contexts/TodosContext";
+import { type Todo } from "./types/todo";
 
-function Todos({ onOpenModal }) {
+interface TodosProps {
+  onOpenModal: (todo: Todo) => void;
+}
+
+function Todos({ onOpenModal }: TodosProps): JSX.Element {
   const todos = useContext(TodosContext);
   const { handleCheckTodo, handleDeleteTodo, handleSwithPosition } =
     useContext(TodosActionsContext);
@@ -27,15 +32,23 @@ function Todos({ onOpenModal }) {
       <TodoList
         title="Todos:"
         todos={todos.filter((todo) => !todo.check)}
-        onTodoCheck={(todo) => handleCheckTodo(todo.id)}
-        onTodoDelete={(todo) => handleDeleteTodo(todo.id)}
+        onTodoCheck={(todo) => {
+          handleCheckTodo(todo.id);
+        }}
+        onTodoDelete={(todo) => {
+          handleDeleteTodo(todo.id);
+        }}
         openModal={onOpenModal}
       />
       <TodoList
         title="Done:"
         todos={todos.filter((todo) => todo.check)}
-        onTodoCheck={(todo) => handleCheckTodo(todo.id)}
-        onTodoDelete={(todo) => handleDeleteTodo(todo.id)}
+        onTodoCheck={(todo) => {
+          handleCheckTodo(todo.id);
+        }}
+        onTodoDelete={(todo) => {
+          handleDeleteTodo(todo.id);
+        }}
         disableCheck
         openModal={onOpenModal}
       />

@@ -6,12 +6,13 @@ import Modal from "../components/Modal";
 import Todos from "../features/todos";
 import TodosProvider from "../features/todos/contexts/TodosContext";
 import AddTodo from "../features/todos/components/AddTodo";
+import { type Todo } from "../features/todos/types/todo";
 
-function HomePage() {
+function HomePage(): JSX.Element {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalHeader, setModalHeader] = useState("");
 
-  const onOpenModal = (todo) => {
+  const onOpenModal = (todo: Todo): void => {
     setModalOpen(true);
     setModalHeader(todo.value);
   };
@@ -29,7 +30,7 @@ function HomePage() {
             <hr className="my-2" />
           </div>
           <Tabs
-            initialTab={TAB_IDS.TODOS}
+            initialTab={TAB_IDS.TODOS.toString()}
             tabs={{
               [TAB_IDS.TODOS]: {
                 name: "Todos",
@@ -46,12 +47,16 @@ function HomePage() {
       {modalOpen && (
         <Modal
           header={modalHeader}
-          closeModal={() => setModalOpen(false)}
+          closeModal={() => {
+            setModalOpen(false);
+          }}
           footer={
             <div className="flex">
               <button
                 className="rounded ml-auto mr-2 px-4 py-2 bg-red-500"
-                onClick={() => setModalOpen(false)}
+                onClick={() => {
+                  setModalOpen(false);
+                }}
               >
                 Cancel
               </button>

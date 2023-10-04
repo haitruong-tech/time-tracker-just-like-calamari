@@ -4,28 +4,41 @@ import { PURPOSES, RECORD, UPDATE_PROGRESS } from "../constants";
 import { getTrackerState } from "../utils";
 import { useImmerReducer } from "use-immer";
 import { timeTrackerReducer } from "../reducers/timeTrackerReducer";
+import { type Timer } from "../types/timer";
 
 const SECOND = 1000;
 const MINUTE = 60 * SECOND;
 const HOUR = 60 * MINUTE;
 const DAY = 24 * HOUR;
 
-function useTimeTracker() {
+interface IUseTimeTrackerReturnValue {
+  timers: Timer[];
+  pxPerMillSecond: number;
+  work: () => void;
+  takeBreak: () => void;
+}
+
+function useTimeTracker(): IUseTimeTrackerReturnValue {
   const { currentDay, currentMonth, currentYear, initialState } =
     getTrackerState();
   const [timers, dispatch] = useImmerReducer(timeTrackerReducer, initialState);
   const lastUpdate = useRef<Date>();
   const pxPerMillSecond = 352 / DAY; // width of the time bar / time
 
-  const persistLastUpdate = () => {
+  const persistLastUpdate = (): void => {
     localStorage.setItem(
       LOCAL_STORAGE.LAST_UPDATE,
       JSON.stringify(lastUpdate.current)
     );
   };
 
-  const work = () => {
-    if (timers.at(-1).purpose === PURPOSES.WORK) return;
+  const work = (): void => {
+    if (
+      timers.at(-1)?.purpose === PURPOSES.WORK ||
+      lastUpdate.current === undefined ||
+      lastUpdate.current === null
+    )
+      return;
     dispatch({
       type: RECORD,
       payload: {
@@ -37,8 +50,13 @@ function useTimeTracker() {
     persistLastUpdate();
   };
 
-  const takeBreak = () => {
-    if (timers.at(-1)?.purpose === PURPOSES.BREAK) return;
+  const takeBreak = (): void => {
+    if (
+      timers.at(-1)?.purpose === PURPOSES.BREAK ||
+      lastUpdate.current === undefined ||
+      lastUpdate.current === null
+    )
+      return;
     dispatch({
       type: RECORD,
       payload: {
@@ -62,10 +80,13 @@ function useTimeTracker() {
 
   useEffect(() => {
     lastUpdate.current =
-      new Date(JSON.parse(localStorage.getItem(LOCAL_STORAGE.LAST_UPDATE))) ??
-      new Date();
+      new Date(
+        JSON.parse(localStorage.getItem(LOCAL_STORAGE.LAST_UPDATE) as string)
+      ) ?? new Date();
 
-    function updateProgress() {
+    function updateProgress(): void {
+      if (lastUpdate.current === undefined || lastUpdate.current === null)
+        return;
       dispatch({
         type: UPDATE_PROGRESS,
         payload: lastUpdate.current.getTime(),
@@ -74,10 +95,13 @@ function useTimeTracker() {
       persistLastUpdate();
     }
     updateProgress();
+
     const intervalID = setInterval(() => {
       updateProgress();
     }, 1000);
-    return () => clearInterval(intervalID);
+    return () => {
+      clearInterval(intervalID);
+    };
   }, [currentDay, currentMonth, currentYear]);
 
   return { timers, pxPerMillSecond, work, takeBreak };
