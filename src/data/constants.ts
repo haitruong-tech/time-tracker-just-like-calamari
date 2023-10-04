@@ -1,7 +1,7 @@
 export const LOCAL_STORAGE = {
   TODOS: "todos",
   TIMERS: "timers/{date}",
-  LAST_UPDATE: "lastUpdate"
+  LAST_UPDATE: "lastUpdate",
 };
 
 export const TAB_IDS = {

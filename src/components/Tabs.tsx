@@ -6,16 +6,14 @@ interface Tab {
   component: React.ReactNode;
 }
 
-interface ITabs {
-  [key: string]: Tab;
-}
+type ITabs = Record<string, Tab>;
 
 interface TabsProps {
   initialTab: string;
   tabs: ITabs;
 }
 
-function Tabs({ initialTab, tabs }: TabsProps) {
+function Tabs({ initialTab, tabs }: TabsProps): JSX.Element {
   const [activeTab, setActiveTab] = useState(initialTab);
   return (
     <div>
@@ -29,7 +27,9 @@ function Tabs({ initialTab, tabs }: TabsProps) {
               },
               "py-1 px-2 cursor-pointer relative -bottom-[1px] border-t border-l border-r rounded-tl rounded-tr border-transparent"
             )}
-            onClick={() => setActiveTab(tabID)}
+            onClick={() => {
+              setActiveTab(tabID);
+            }}
           >
             {tab.name}
           </li>

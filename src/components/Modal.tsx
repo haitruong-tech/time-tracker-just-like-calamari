@@ -7,7 +7,12 @@ interface ModalProps {
   closeModal: () => void;
 }
 
-function Modal({ content, footer, header, closeModal }: ModalProps) {
+function Modal({
+  content,
+  footer,
+  header,
+  closeModal,
+}: ModalProps): JSX.Element {
   return (
     <div className="bg-black/80 fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center">
       <div className="bg-gray-300 w-96">
@@ -18,8 +23,8 @@ function Modal({ content, footer, header, closeModal }: ModalProps) {
             onClick={closeModal}
           />
         </header>
-        {content && <div className="p-4 border-b">{content}</div>}
-        {footer && <footer className="p-4">{footer}</footer>}
+        {Boolean(content) && <div className="p-4 border-b">{content}</div>}
+        {Boolean(footer) && <footer className="p-4">{footer}</footer>}
       </div>
     </div>
   );
