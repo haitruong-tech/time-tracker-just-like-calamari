@@ -1,11 +1,11 @@
-import clsx from "clsx";
-import useTimeTracker from "./hooks/useTimeTracker";
-import { PURPOSES } from "./constants";
-import { formatDuration } from "./utils";
+import clsx from 'clsx'
+import useTimeTracker from './hooks/useTimeTracker'
+import { PURPOSES } from './constants'
+import { formatDuration } from './utils'
 
-function TimeTracker() {
-  const { pxPerMillSecond, timers, work, takeBreak } = useTimeTracker();
-  const { hour, minute, second } = formatDuration(timers.at(-1).duration);
+function TimeTracker (): JSX.Element {
+  const { pxPerMillSecond, timers, work, takeBreak } = useTimeTracker()
+  const { hour, minute, second } = formatDuration(timers.at(-1)?.duration ?? 0)
 
   return (
     <div>
@@ -20,15 +20,15 @@ function TimeTracker() {
               style={{ width: pxPerMillSecond * timer.duration }}
               className={clsx(
                 {
-                  "bg-orange-400": timer.purpose === PURPOSES.BREAK,
-                  "bg-green-400": timer.purpose === PURPOSES.WORK,
+                  'bg-orange-400': timer.purpose === PURPOSES.BREAK,
+                  'bg-green-400': timer.purpose === PURPOSES.WORK
                 },
-                "text-transparent"
+                'text-transparent'
               )}
             >
               .
             </div>
-          );
+          )
         })}
       </div>
       <div className="mt-2">
@@ -40,7 +40,7 @@ function TimeTracker() {
         </button>
       </div>
     </div>
-  );
+  )
 }
 
-export default TimeTracker;
+export default TimeTracker

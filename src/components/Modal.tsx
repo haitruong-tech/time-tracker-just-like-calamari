@@ -1,8 +1,8 @@
 import { RiCloseLine } from "react-icons/ri";
 
 interface ModalProps {
-  content: React.ReactNode;
-  footer: React.ReactNode;
+  content?: React.ReactNode;
+  footer?: React.ReactNode;
   header: React.ReactNode;
   closeModal: () => void;
 }
