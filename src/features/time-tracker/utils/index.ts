@@ -2,6 +2,30 @@ import { LOCAL_STORAGE } from "../../../data/constants";
 import { PURPOSES } from "../constants";
 import type { Timer } from "../types/timer";
 
+export enum MONTHS {
+  JANUARY,
+  FEBUARY,
+  MARCH,
+  APRIL,
+  MAY,
+  JUNE,
+  JULY,
+  AUGUST,
+  SEPTEMBER,
+  OCTOBER,
+  NOVEMBER,
+  DECEMBER,
+}
+
+interface DateComponents {
+  day: number;
+  month: number;
+  year: number;
+  hour: number;
+  minute: number;
+  second: number;
+}
+
 interface TrackerState {
   currentDay: number;
   currentMonth: number;
@@ -9,11 +33,30 @@ interface TrackerState {
   initialState: Timer[];
 }
 
+export const getDateComponents = (
+  dateString: string | Date
+): DateComponents => {
+  const date = new Date(dateString);
+  if (date.toString() === "Invalid Date") {
+    throw Error("Invalid date string");
+  }
+  return {
+    day: date.getDate(),
+    month: date.getMonth(),
+    year: date.getFullYear(),
+    hour: date.getHours(),
+    minute: date.getMinutes(),
+    second: date.getSeconds(),
+  };
+};
+
 export const getTrackerState = (): TrackerState => {
   const currentDate = new Date();
-  const currentYear = currentDate.getFullYear();
-  const currentMonth = currentDate.getMonth();
-  const currentDay = currentDate.getDate();
+  const {
+    year: currentYear,
+    month: currentMonth,
+    day: currentDay,
+  } = getDateComponents(currentDate);
   const startTime = new Date(currentYear, currentMonth, currentDay, 0);
 
   // We get the timers of today by finding from the local storage

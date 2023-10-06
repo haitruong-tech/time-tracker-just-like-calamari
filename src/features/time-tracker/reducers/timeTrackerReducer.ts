@@ -1,5 +1,6 @@
 import { RECORD, UPDATE_PROGRESS } from "../constants";
 import type { Timer, TimerActions } from "../types/timer";
+import { v4 as uuidv4 } from "uuid";
 
 export function timeTrackerReducer(
   timers: Timer[],
@@ -11,6 +12,7 @@ export function timeTrackerReducer(
       if (timer == null) return;
       timer.duration += new Date().getTime() - action.payload.lastUpdate;
       timers.push({
+        id: uuidv4(),
         startTime: new Date().toISOString(),
         duration: 0,
         purpose: action.payload.purpose,
@@ -23,8 +25,9 @@ export function timeTrackerReducer(
       const currentDate = new Date();
       if (new Date(timer.startTime).getDate() < currentDate.getDate()) {
         timer = {
+          id: uuidv4(),
           startTime: currentDate.toISOString(),
-          duration: new Date().getTime() - action.payload,
+          duration: new Date().getTime() - currentDate.getTime(),
           purpose: timer.purpose,
         };
         timers.splice(0, timers.length, timer);
