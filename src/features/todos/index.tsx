@@ -22,7 +22,6 @@ function Todos({ onOpenModal }: TodosProps): JSX.Element {
         e.preventDefault();
         const sourceTodoID = e.dataTransfer.getData("text/plain");
         const targetTodoID = (e.target as HTMLElement)?.parentElement?.id;
-        console.log({ sourceTodoID, targetTodoID });
         handleSwithPosition(
           sourceTodoID,
           targetTodoID ?? (e.target as HTMLElement).id

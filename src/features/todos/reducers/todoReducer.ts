@@ -17,9 +17,17 @@ export function todosReducer(
       return;
     }
     case CHECK_TODO: {
-      return todos.map((todo) =>
-        todo.id !== action.payload ? todo : { ...todo, check: !todo.check }
-      );
+      const todo = todos.find((todo) => todo.id === action.payload.todoID);
+      if (todo == null) return;
+      todo.check = !todo.check;
+      if (todo.check) {
+        todo.doneInSessionID = action.payload.timers.at(-1)?.id;
+        todo.revertInSessionID = "";
+      } else {
+        todo.revertInSessionID = action.payload.timers.at(-1)?.id;
+        todo.doneInSessionID = "";
+      }
+      return;
     }
     case DELETE_TODO: {
       return todos.filter((todo) => todo.id !== action.payload);

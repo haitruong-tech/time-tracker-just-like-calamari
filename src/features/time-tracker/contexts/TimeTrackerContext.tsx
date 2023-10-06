@@ -1,24 +1,33 @@
-import { useEffect, useRef } from "react";
+import { createContext, useEffect, useRef } from "react";
 import { LOCAL_STORAGE } from "../../../data/constants";
 import { PURPOSES, RECORD, UPDATE_PROGRESS } from "../constants";
 import { getTrackerState } from "../utils";
 import { useImmerReducer } from "use-immer";
 import { timeTrackerReducer } from "../reducers/timeTrackerReducer";
-import { type Timer } from "../types/timer";
+import { type ITimerContext, type ITimerActionsContext } from "../types/timer";
 
 const SECOND = 1000;
 const MINUTE = 60 * SECOND;
 const HOUR = 60 * MINUTE;
 const DAY = 24 * HOUR;
 
-interface IUseTimeTrackerReturnValue {
-  timers: Timer[];
-  pxPerMillSecond: number;
-  work: () => void;
-  takeBreak: () => void;
+export const TimeTrackerContext = createContext<ITimerContext>({
+  pxPerMillSecond: 0,
+  timers: [],
+});
+export const TimeTrackerActionsContext = createContext<ITimerActionsContext>({
+  takeBreak: () => {},
+  work: () => {},
+  workout: () => {},
+});
+
+interface TimeTrackerProviderProps {
+  children: React.ReactNode;
 }
 
-function useTimeTracker(): IUseTimeTrackerReturnValue {
+function TimeTrackerProvider({
+  children,
+}: TimeTrackerProviderProps): JSX.Element {
   const { currentDay, currentMonth, currentYear, initialState } =
     getTrackerState();
   const [timers, dispatch] = useImmerReducer(timeTrackerReducer, initialState);
@@ -32,9 +41,9 @@ function useTimeTracker(): IUseTimeTrackerReturnValue {
     );
   };
 
-  const work = (): void => {
+  const recordSession = (purpose: PURPOSES): void => {
     if (
-      timers.at(-1)?.purpose === PURPOSES.WORK ||
+      timers.at(-1)?.purpose === purpose ||
       lastUpdate.current === undefined ||
       lastUpdate.current === null
     )
@@ -42,25 +51,7 @@ function useTimeTracker(): IUseTimeTrackerReturnValue {
     dispatch({
       type: RECORD,
       payload: {
-        purpose: PURPOSES.WORK,
-        lastUpdate: lastUpdate.current.getTime(),
-      },
-    });
-    lastUpdate.current = new Date();
-    persistLastUpdate();
-  };
-
-  const takeBreak = (): void => {
-    if (
-      timers.at(-1)?.purpose === PURPOSES.BREAK ||
-      lastUpdate.current === undefined ||
-      lastUpdate.current === null
-    )
-      return;
-    dispatch({
-      type: RECORD,
-      payload: {
-        purpose: PURPOSES.BREAK,
+        purpose,
         lastUpdate: lastUpdate.current.getTime(),
       },
     });
@@ -79,10 +70,10 @@ function useTimeTracker(): IUseTimeTrackerReturnValue {
   }, [timers]);
 
   useEffect(() => {
-    lastUpdate.current =
-      new Date(
-        JSON.parse(localStorage.getItem(LOCAL_STORAGE.LAST_UPDATE) as string)
-      ) ?? new Date();
+    lastUpdate.current = new Date(
+      JSON.parse(localStorage.getItem(LOCAL_STORAGE.LAST_UPDATE) as string) ??
+        new Date()
+    );
 
     function updateProgress(): void {
       if (lastUpdate.current === undefined || lastUpdate.current === null)
@@ -104,7 +95,26 @@ function useTimeTracker(): IUseTimeTrackerReturnValue {
     };
   }, [currentDay, currentMonth, currentYear]);
 
-  return { timers, pxPerMillSecond, work, takeBreak };
+  // return { timers, pxPerMillSecond, work, takeBreak };
+  return (
+    <TimeTrackerContext.Provider value={{ timers, pxPerMillSecond }}>
+      <TimeTrackerActionsContext.Provider
+        value={{
+          work: () => {
+            recordSession(PURPOSES.WORK);
+          },
+          takeBreak: () => {
+            recordSession(PURPOSES.BREAK);
+          },
+          workout: () => {
+            recordSession(PURPOSES.WORKOUT);
+          },
+        }}
+      >
+        {children}
+      </TimeTrackerActionsContext.Provider>
+    </TimeTrackerContext.Provider>
+  );
 }
 
-export default useTimeTracker;
+export default TimeTrackerProvider;

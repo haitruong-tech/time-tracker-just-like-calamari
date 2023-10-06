@@ -1,3 +1,4 @@
+import { type Timer } from "../../time-tracker/types/timer";
 import {
   type ADD_TODO,
   type CHECK_TODO,
@@ -9,9 +10,11 @@ interface Todo {
   check: boolean;
   value: string;
   id: string;
+  doneInSessionID?: string;
+  revertInSessionID?: string;
 }
 
-interface ITodoActionsContext {
+export interface ITodoActionsContext {
   handleAddTodo: (todo: AddTodoActionPayload) => void;
   handleCheckTodo: (todo: string) => void;
   handleDeleteTodo: (todo: string) => void;
@@ -28,9 +31,14 @@ interface AddTodoAction {
   payload: AddTodoActionPayload;
 }
 
+interface CheckTodoActionPayload {
+  todoID: string;
+  timers: Timer[];
+}
+
 interface CheckTodoAction {
   type: typeof CHECK_TODO;
-  payload: string;
+  payload: CheckTodoActionPayload;
 }
 
 interface DeleteTodoAction {
