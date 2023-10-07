@@ -1,12 +1,12 @@
 import { useState } from "react";
 import Tabs from "../components/Tabs";
 import { TAB_IDS } from "../data/constants";
-import TimeTracker from "../features/time-tracker";
+import TimeTracker from "../features/time-tracker-v1";
 import Modal from "../components/Modal";
-import Todos from "../features/todos";
-import TodosProvider from "../features/todos/contexts/TodosContext";
-import AddTodo from "../features/todos/components/AddTodo";
-import { type Todo } from "../features/todos/types/todo";
+import Todos from "../features/todos-v1";
+import TodosProvider from "../features/todos-v1/contexts/TodosContext";
+import AddTodo from "../features/todos-v1/components/AddTodo";
+import { type Todo } from "../features/todos-v1/types/todo";
 
 function HomePage(): JSX.Element {
   const [modalOpen, setModalOpen] = useState(false);

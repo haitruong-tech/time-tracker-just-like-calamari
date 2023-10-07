@@ -1,4 +1,4 @@
-import { type Timer } from "../../time-tracker/types/timer";
+import { type Timer } from "../../time-tracker-v1/types/timer";
 import {
   type ADD_TODO,
   type CHECK_TODO,
