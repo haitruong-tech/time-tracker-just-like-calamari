@@ -109,5 +109,11 @@
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
-  "include": [".eslintrc.js", "prettier.config.js", "**/*.tsx"]
+  "include": [
+    ".eslintrc.js",
+    "prettier.config.js",
+    "src/types/custom.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ]
 }

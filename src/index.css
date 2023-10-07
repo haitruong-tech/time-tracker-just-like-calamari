@@ -2,11 +2,40 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "Fira Mono";
+  src: url("./assets/fonts/Fira_Mono/FiraMono-Regular.ttf");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Fira Mono";
+  src: url("./assets/fonts/Fira_Mono/FiraMono-Medium.ttf");
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: "Fira Mono";
+  src: url("./assets/fonts/Fira_Mono/FiraMono-Bold.ttf");
+  font-weight: 700;
+}
+
+@layer components {
+  .stripes {
+    background: repeating-linear-gradient(
+      -60deg,
+      #f1c104,
+      #f1c104 15px,
+      #1c1c1c 15px,
+      #1c1c1c 30px
+    );
+  }
+}
+
 body {
+  background-color: #050920;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: "Fira Mono", "Courier New", Courier, monospace;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

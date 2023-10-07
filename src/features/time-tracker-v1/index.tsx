@@ -6,7 +6,7 @@ import {
   TimeTrackerActionsContext,
   TimeTrackerContext,
 } from "./contexts/TimeTrackerContext";
-import { TodosContext } from "../todos/contexts/TodosContext";
+import { TodosContext } from "../todos-v1/contexts/TodosContext";
 import { type Timer } from "./types/timer";
 
 function TimeTracker(): JSX.Element {

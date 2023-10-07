@@ -13,7 +13,7 @@ import {
   type ITodoActionsContext,
   type AddTodoActionPayload,
 } from "../types/todo";
-import { TimeTrackerContext } from "../../time-tracker/contexts/TimeTrackerContext";
+import { TimeTrackerContext } from "../../time-tracker-v1/contexts/TimeTrackerContext";
 
 const { TODOS } = LOCAL_STORAGE;
 
