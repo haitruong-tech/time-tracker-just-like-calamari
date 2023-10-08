@@ -1,6 +1,7 @@
+import { memo } from "react";
 import { ErrorIcon } from "src/assets/icons";
 
-function ErrorTimeTracker(): JSX.Element {
+const ErrorTimeTracker = memo(() => {
   return (
     <div>
       <div>
@@ -18,6 +19,8 @@ function ErrorTimeTracker(): JSX.Element {
       </div>
     </div>
   );
-}
+});
+
+ErrorTimeTracker.displayName = "ErrorTimeTracker";
 
 export default ErrorTimeTracker;

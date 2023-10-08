@@ -1,9 +1,13 @@
 import TimeTracker from "@features/time-tracker-v2";
 import TimeTrackerErrorBoundary from "@features/time-tracker-v2/error-boundary";
 import Todos from "@features/todos-v2";
-import Navbar from "src/components/Navbar";
+import { memo, useState } from "react";
+import TaskDetailsModal from "src/components/Modal/task-details";
+import Navbar from "src/components/navbar";
 
-function HomePage(): JSX.Element {
+const HomePage = memo(() => {
+  const [todoID, setTodoID] = useState<null | string>(null);
+
   return (
     <div className="w-screen min-h-screen text-[#eee] p-16">
       <Navbar />
@@ -12,11 +16,25 @@ function HomePage(): JSX.Element {
           <TimeTracker />
         </TimeTrackerErrorBoundary>
         <div className="mt-14">
-          <Todos />
+          <Todos
+            onTaskClicked={(todoID: string) => {
+              setTodoID(todoID);
+            }}
+          />
         </div>
       </div>
+      {todoID != null && (
+        <TaskDetailsModal
+          todoID={todoID}
+          closeModal={() => {
+            setTodoID(null);
+          }}
+        />
+      )}
     </div>
   );
-}
+});
+
+HomePage.displayName = "HomePage";
 
 export default HomePage;

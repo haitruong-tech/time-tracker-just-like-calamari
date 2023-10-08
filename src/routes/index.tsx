@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import HomePage from "@pages/Homepage-v2";
+import HomePage from "@pages/homepage-v2";
 
 export const router = createBrowserRouter([
   {

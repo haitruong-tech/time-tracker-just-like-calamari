@@ -1,7 +1,8 @@
 import clsx from "clsx";
+import { memo } from "react";
 import { Link, NavLink } from "react-router-dom";
 
-function Navbar(): JSX.Element {
+const Navbar = memo(() => {
   return (
     <div className="xl:fixed xl:top-16 xl:left-16">
       <Link className="text-2xl font-bold" to="/">
@@ -45,6 +46,8 @@ function Navbar(): JSX.Element {
       </nav>
     </div>
   );
-}
+});
+
+Navbar.displayName = "Navbar";
 
 export default Navbar;

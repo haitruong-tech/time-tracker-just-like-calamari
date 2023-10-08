@@ -1,20 +1,28 @@
-import { useContext, useMemo } from "react";
+import { memo, useContext, useMemo } from "react";
 import { TodosActionsContext, TodosContext } from "./contexts/TodosContext";
 
 import { UnfillCheckboxIcon, FillCheckboxIcon } from "src/assets/icons";
 import AddTodo from "./components/AddTodo";
+import { TimeTrackerContext } from "@features/time-tracker-v2/contexts/TimeTrackerContext";
 
-function Todos(): JSX.Element {
+interface TodosProps {
+  timerID: string;
+  onTaskClicked: (todoID: string) => void;
+}
+
+const Todos = memo(({ timerID, onTaskClicked }: TodosProps) => {
   const todos = useContext(TodosContext);
+  const { handleCheckTodo } = useContext(TodosActionsContext);
+
   const incompletedTodos = useMemo(
     () => todos.filter((todo) => !todo.check),
     [todos]
   );
+
   const completedTodos = useMemo(
     () => todos.filter((todo) => todo.check),
     [todos]
   );
-  const { handleCheckTodo } = useContext(TodosActionsContext);
 
   return (
     <>
@@ -29,12 +37,16 @@ function Todos(): JSX.Element {
             <li
               key={todo.id}
               className="border-2 py-2 px-4 flex justify-between items-center first:rounded-tl first:rounded-tr last:rounded-bl last:rounded-br cursor-pointer hover:bg-[#eee]/[0.25]"
+              onClick={() => {
+                onTaskClicked(todo.id);
+              }}
             >
               <span className="font-medium text-xl">{todo.value}</span>
               <UnfillCheckboxIcon
                 className="cursor-pointer fill-transparent hover:fill-[#eee]/[.2] transition"
-                onClick={() => {
-                  handleCheckTodo(todo.id);
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleCheckTodo(todo.id, timerID);
                 }}
               />
             </li>
@@ -51,11 +63,20 @@ function Todos(): JSX.Element {
             <li
               key={todo.id}
               className="border-2 py-2 px-4 flex justify-between items-center first:rounded-tl first:rounded-tr last:rounded-bl last:rounded-br cursor-pointer hover:bg-[#eee]/[0.25]"
+              onClick={() => {
+                onTaskClicked(todo.id);
+              }}
             >
               <span className="font-medium text-xl line-through text-[#eee]/[.75]">
                 {todo.value}
               </span>
-              <FillCheckboxIcon className="cursor-pointer hover:fill-[#eee]/[0.75] fill-[#eee] transition" />
+              <FillCheckboxIcon
+                className="cursor-pointer hover:fill-[#eee]/[0.75] fill-[#eee] transition"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleCheckTodo(todo.id, timerID);
+                }}
+              />
             </li>
           ))}
         </ul>
@@ -108,6 +129,15 @@ function Todos(): JSX.Element {
   //     />
   //   </div>
   // );
-}
+});
 
-export default Todos;
+Todos.displayName = "Todos";
+
+const TodosWrapper = memo((props: any) => {
+  const timerID = useContext(TimeTrackerContext).timers.at(-1)?.id ?? "";
+  return <Todos timerID={timerID} {...props} />;
+});
+
+TodosWrapper.displayName = "TodosWrapper";
+
+export default TodosWrapper;
