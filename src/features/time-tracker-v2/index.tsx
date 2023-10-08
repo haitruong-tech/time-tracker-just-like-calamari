@@ -8,6 +8,7 @@ import { StartIcon, StopIcon } from "src/assets/icons";
 import { PURPOSES } from "./constants";
 import { formatDate, formatHour } from "src/lib/date-fns";
 import { addDays } from "date-fns";
+import { formatDuration } from "./utils";
 
 const SECOND = 1000;
 const MINUTE = 60 * SECOND;
@@ -20,6 +21,7 @@ const TimeTracker = memo(() => {
   const startDate = new Date(timers[0]?.startTime);
   const timerRef = useRef<HTMLDivElement>(null);
   const [pxPerMillSecond, setPxPerMillSecond] = useState(0);
+  const timer = timers.at(-1);
 
   useLayoutEffect(() => {
     const resizeCallback = (): void => {
@@ -30,10 +32,12 @@ const TimeTracker = memo(() => {
     return resizeCallback;
   }, [timerRef.current]);
 
+  if (timer == null) throw new Error("No timer found");
+
   return (
     <div>
       <div>
-        {timers.at(-1)?.purpose === PURPOSES.BREAK && (
+        {timer.purpose === PURPOSES.BREAK && (
           <div>
             <StartIcon
               className="block cursor-pointer mx-auto hover:text-[#29C81E]/[.75] transition text-[#29C81E]"
@@ -41,7 +45,7 @@ const TimeTracker = memo(() => {
             />
           </div>
         )}
-        {timers.at(-1)?.purpose === PURPOSES.WORK && (
+        {timer.purpose === PURPOSES.WORK && (
           <div>
             <StopIcon
               className="mx-auto block cursor-pointer hover:text-[#E23703]/[.75] transition text-[#E23703]"
@@ -50,7 +54,12 @@ const TimeTracker = memo(() => {
           </div>
         )}
       </div>
-      <div className="mt-14">
+      <div>
+        <h2 className="text-center mt-8 text-4xl">
+          {formatDuration(timer.duration)}
+        </h2>
+      </div>
+      <div className="mt-12">
         <div
           ref={timerRef}
           className="flex bg-white h-10 relative before:content-[''] before:absolute before:h-16 before:w-px before:left-0 before:top-1/2 before:-translate-y-1/2 before:bg-white after:content-[''] after:absolute after:h-16 after:w-px after:right-0 after:top-1/2 after:-translate-y-1/2 after:bg-white"

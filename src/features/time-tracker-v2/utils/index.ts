@@ -85,13 +85,7 @@ export const getTrackerState = (): TrackerState => {
   };
 };
 
-interface IFormatDurationReturnValue {
-  hour: string;
-  minute: string;
-  second: string;
-}
-
-export function formatDuration(duration: number): IFormatDurationReturnValue {
+export function formatDuration(duration: number): string {
   const totalSecond = Math.floor(duration / 1000);
   const hour: number = Math.floor(totalSecond / 60 / 60);
   const minute: number = Math.floor((totalSecond / 60) % 60);
@@ -100,5 +94,5 @@ export function formatDuration(duration: number): IFormatDurationReturnValue {
   const sHour = hour < 10 ? `0${hour}` : `${hour}`;
   const sMinute = minute < 10 ? `0${minute}` : `${minute}`;
   const sSecond = second < 10 ? `0${second}` : `${second}`;
-  return { hour: sHour, minute: sMinute, second: sSecond };
+  return `${sHour}:${sMinute}:${sSecond}`;
 }
