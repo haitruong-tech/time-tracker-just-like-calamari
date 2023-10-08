@@ -18,13 +18,13 @@ export function todosReducer(
     }
     case CHECK_TODO: {
       const todo = todos.find((todo) => todo.id === action.payload.todoID);
-      if (todo == null) return;
+      if (todo == null || action.payload.timerID === "") return;
       todo.check = !todo.check;
       if (todo.check) {
-        todo.doneInSessionID = action.payload.timers.at(-1)?.id;
+        todo.doneInSessionID = action.payload.timerID;
         todo.revertInSessionID = "";
       } else {
-        todo.revertInSessionID = action.payload.timers.at(-1)?.id;
+        todo.revertInSessionID = action.payload.timerID;
         todo.doneInSessionID = "";
       }
       return;

@@ -1,4 +1,4 @@
-import { createContext, useEffect, useRef } from "react";
+import { createContext, memo, useEffect, useRef } from "react";
 import { LOCAL_STORAGE } from "../../../data/constants";
 import { PURPOSES, RECORD, UPDATE_PROGRESS } from "../constants";
 import { getTrackerState } from "../utils";
@@ -19,9 +19,7 @@ interface TimeTrackerProviderProps {
   children: React.ReactNode;
 }
 
-function TimeTrackerProvider({
-  children,
-}: TimeTrackerProviderProps): JSX.Element {
+const TimeTrackerProvider = memo(({ children }: TimeTrackerProviderProps) => {
   const { currentDay, currentMonth, currentYear, initialState } =
     getTrackerState();
   const [timers, dispatch] = useImmerReducer(timeTrackerReducer, initialState);
@@ -108,6 +106,8 @@ function TimeTrackerProvider({
       </TimeTrackerActionsContext.Provider>
     </TimeTrackerContext.Provider>
   );
-}
+});
+
+TimeTrackerProvider.displayName = "TimeTrackerProvider";
 
 export default TimeTrackerProvider;

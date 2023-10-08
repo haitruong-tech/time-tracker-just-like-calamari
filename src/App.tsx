@@ -5,8 +5,9 @@ import TimeTrackerProvider from "@features/time-tracker-v2/contexts/TimeTrackerC
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import TodosProvider from "@features/todos-v2/contexts/TodosContext";
+import { memo } from "react";
 
-function App(): JSX.Element {
+const App = memo(() => {
   return (
     <TimeTrackerProvider>
       <TodosProvider>
@@ -15,6 +16,8 @@ function App(): JSX.Element {
       </TodosProvider>
     </TimeTrackerProvider>
   );
-}
+});
+
+App.displayName = "App";
 
 export default App;

@@ -1,4 +1,3 @@
-import { type Timer } from "../../time-tracker-v1/types/timer";
 import {
   type ADD_TODO,
   type CHECK_TODO,
@@ -16,7 +15,7 @@ interface Todo {
 
 export interface ITodoActionsContext {
   handleAddTodo: (todo: AddTodoActionPayload) => void;
-  handleCheckTodo: (todoID: string) => void;
+  handleCheckTodo: (todoID: string, timerID: string) => void;
   handleDeleteTodo: (todoID: string) => void;
   handleSwithPosition: (sourceTodoID: string, targetTodoID: string) => void;
 }
@@ -33,7 +32,7 @@ interface AddTodoAction {
 
 interface CheckTodoActionPayload {
   todoID: string;
-  timers: Timer[];
+  timerID: string;
 }
 
 interface CheckTodoAction {

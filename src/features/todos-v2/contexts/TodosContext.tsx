@@ -1,4 +1,4 @@
-import { useEffect, createContext, useContext } from "react";
+import { useEffect, createContext } from "react";
 import { LOCAL_STORAGE } from "../../../data/constants";
 import { todosReducer } from "../reducers/todoReducer";
 import {
@@ -13,7 +13,6 @@ import {
   type ITodoActionsContext,
   type AddTodoActionPayload,
 } from "../types/todo";
-import { TimeTrackerContext } from "../../time-tracker-v1/contexts/TimeTrackerContext";
 
 const { TODOS } = LOCAL_STORAGE;
 
@@ -30,8 +29,6 @@ interface TodosProviderProps {
 }
 
 function TodosProvider({ children }: TodosProviderProps): JSX.Element {
-  const { timers } = useContext(TimeTrackerContext);
-
   const [todos, dispatch] = useImmerReducer(
     todosReducer,
     JSON.parse(localStorage.getItem(TODOS) ?? "[]")
@@ -45,8 +42,8 @@ function TodosProvider({ children }: TodosProviderProps): JSX.Element {
     dispatch({ type: ADD_TODO, payload: todo });
   };
 
-  const handleCheckTodo = (todoID: string): void => {
-    dispatch({ type: CHECK_TODO, payload: { todoID, timers } });
+  const handleCheckTodo = (todoID: string, timerID: string): void => {
+    dispatch({ type: CHECK_TODO, payload: { todoID, timerID } });
   };
 
   const handleDeleteTodo = (todoID: string): void => {

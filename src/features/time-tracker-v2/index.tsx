@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { useContext, useLayoutEffect, useRef, useState } from "react";
+import { memo, useContext, useLayoutEffect, useRef, useState } from "react";
 import {
   TimeTrackerActionsContext,
   TimeTrackerContext,
@@ -14,7 +14,7 @@ const MINUTE = 60 * SECOND;
 const HOUR = 60 * MINUTE;
 const DAY = 24 * HOUR;
 
-function TimeTracker(): JSX.Element {
+const TimeTracker = memo(() => {
   const { timers } = useContext(TimeTrackerContext);
   const { work, takeBreak } = useContext(TimeTrackerActionsContext);
   const startDate = new Date(timers[0]?.startTime);
@@ -84,6 +84,8 @@ function TimeTracker(): JSX.Element {
       </div>
     </div>
   );
-}
+});
+
+TimeTracker.displayName = "TimeTracker";
 
 export default TimeTracker;
