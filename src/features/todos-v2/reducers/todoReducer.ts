@@ -1,9 +1,4 @@
-import {
-  ADD_TODO,
-  CHECK_TODO,
-  DELETE_TODO,
-  SWITCH_TODO_POSITION,
-} from "../constants";
+import { TODO_ACTIONS } from "../constants";
 import { type Todo, type TodoActions } from "../types/todo";
 import { v4 as uuidv4 } from "uuid";
 
@@ -12,11 +7,11 @@ export function todosReducer(
   action: TodoActions
 ): undefined | Todo[] {
   switch (action.type) {
-    case ADD_TODO: {
+    case TODO_ACTIONS.ADD_TODO: {
       todos.unshift({ ...action.payload, id: uuidv4() });
       return;
     }
-    case CHECK_TODO: {
+    case TODO_ACTIONS.CHECK_TODO: {
       const todo = todos.find((todo) => todo.id === action.payload.todoID);
       if (todo == null || action.payload.timerID === "") return;
       todo.check = !todo.check;
@@ -29,10 +24,10 @@ export function todosReducer(
       }
       return;
     }
-    case DELETE_TODO: {
+    case TODO_ACTIONS.DELETE_TODO: {
       return todos.filter((todo) => todo.id !== action.payload);
     }
-    case SWITCH_TODO_POSITION: {
+    case TODO_ACTIONS.SWITCH_TODO_POSITION: {
       const { sourceTodoID, targetTodoID } = action.payload;
       const sourceTodo = todos.find(
         (todo) => todo.id.toString() === sourceTodoID
@@ -53,6 +48,12 @@ export function todosReducer(
       const targetTodoIndex = todos.indexOf(targetTodo);
       todos.splice(sourceTodoIndex, 1);
       todos.splice(targetTodoIndex, 0, sourceTodo);
+      return;
+    }
+    case TODO_ACTIONS.EDIT_TODO: {
+      const todo = todos.find((todo) => todo.id === action.payload.todoID);
+      if (todo == null) return;
+      todo.value = action.payload.value;
     }
   }
 }

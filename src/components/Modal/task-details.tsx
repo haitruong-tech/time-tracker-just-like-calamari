@@ -1,6 +1,9 @@
-import { memo, useContext } from "react";
+import { memo, useContext, useState } from "react";
 import Modal from ".";
-import { TodosContext } from "@features/todos-v2/contexts/TodosContext";
+import {
+  TodosActionsContext,
+  TodosContext,
+} from "@features/todos-v2/contexts/TodosContext";
 import { toastError } from "src/lib/react-toastify";
 
 interface ModalProps {
@@ -10,7 +13,9 @@ interface ModalProps {
 
 const TaskDetailsModal = memo(({ closeModal, todoID }: ModalProps) => {
   const todos = useContext(TodosContext);
+  const { editTodo, handleDeleteTodo } = useContext(TodosActionsContext);
   const todo = todos.find((todo) => todo.id === todoID);
+  const [todoValue, setTodoValue] = useState(todo?.value ?? "");
 
   if (todo == null) {
     toastError("No todo found");
@@ -26,8 +31,13 @@ const TaskDetailsModal = memo(({ closeModal, todoID }: ModalProps) => {
           <span className="shrink-0">Task #1:</span>
           <input
             className="py-1 px-2 shrink w-full bg-transparent rounded"
-            value={todo.value}
-            onChange={() => {}}
+            value={todoValue}
+            onChange={(e) => {
+              setTodoValue(e.target.value);
+            }}
+            onBlur={() => {
+              editTodo(todo.id, todoValue);
+            }}
           />
         </h2>
       }
@@ -35,7 +45,7 @@ const TaskDetailsModal = memo(({ closeModal, todoID }: ModalProps) => {
         <div>
           <section className="mt-10 uppercase">
             <div>
-              <h3 className="text-2xl font-medium">{todo.value}</h3>
+              <h3 className="text-2xl font-medium">{todoValue}</h3>
               <div className="mt-4 grid grid-cols-2 gap-6">
                 <div>
                   <h4 className="text-xl font-medium">Estimated time</h4>
@@ -92,7 +102,13 @@ const TaskDetailsModal = memo(({ closeModal, todoID }: ModalProps) => {
             </h2>
             <div className="mt-1 flex items-center justify-between">
               <span className="text-xl font-medium">Delete this task</span>
-              <button className="border-4 border-[#E23703] text-[#E23703] text-xl font-bold rounded py-2 px-4 hover:bg-[#E23703] hover:text-[#050920] transition">
+              <button
+                className="border-4 border-[#E23703] text-[#E23703] text-xl font-bold rounded py-2 px-4 hover:bg-[#E23703] hover:text-[#050920] transition"
+                onClick={() => {
+                  handleDeleteTodo(todo.id);
+                  closeModal();
+                }}
+              >
                 Delete
               </button>
             </div>

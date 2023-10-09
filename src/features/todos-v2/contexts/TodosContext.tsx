@@ -1,12 +1,7 @@
 import { useEffect, createContext } from "react";
 import { LOCAL_STORAGE } from "../../../data/constants";
 import { todosReducer } from "../reducers/todoReducer";
-import {
-  ADD_TODO,
-  CHECK_TODO,
-  DELETE_TODO,
-  SWITCH_TODO_POSITION,
-} from "../constants";
+import { TODO_ACTIONS } from "../constants";
 import { useImmerReducer } from "use-immer";
 import {
   type Todo,
@@ -22,6 +17,7 @@ export const TodosActionsContext = createContext<ITodoActionsContext>({
   handleCheckTodo: () => {},
   handleDeleteTodo: () => {},
   handleSwithPosition: () => {},
+  editTodo: () => {},
 });
 
 interface TodosProviderProps {
@@ -39,15 +35,15 @@ function TodosProvider({ children }: TodosProviderProps): JSX.Element {
   }, [todos]);
 
   const handleAddTodo = (todo: AddTodoActionPayload): void => {
-    dispatch({ type: ADD_TODO, payload: todo });
+    dispatch({ type: TODO_ACTIONS.ADD_TODO, payload: todo });
   };
 
   const handleCheckTodo = (todoID: string, timerID: string): void => {
-    dispatch({ type: CHECK_TODO, payload: { todoID, timerID } });
+    dispatch({ type: TODO_ACTIONS.CHECK_TODO, payload: { todoID, timerID } });
   };
 
   const handleDeleteTodo = (todoID: string): void => {
-    dispatch({ type: DELETE_TODO, payload: todoID });
+    dispatch({ type: TODO_ACTIONS.DELETE_TODO, payload: todoID });
   };
 
   const handleSwithPosition = (
@@ -55,9 +51,13 @@ function TodosProvider({ children }: TodosProviderProps): JSX.Element {
     targetTodoID: string
   ): void => {
     dispatch({
-      type: SWITCH_TODO_POSITION,
+      type: TODO_ACTIONS.SWITCH_TODO_POSITION,
       payload: { sourceTodoID, targetTodoID },
     });
+  };
+
+  const editTodo = (todoID: string, value: string): void => {
+    dispatch({ type: TODO_ACTIONS.EDIT_TODO, payload: { todoID, value } });
   };
 
   return (
@@ -68,6 +68,7 @@ function TodosProvider({ children }: TodosProviderProps): JSX.Element {
           handleCheckTodo,
           handleDeleteTodo,
           handleSwithPosition,
+          editTodo,
         }}
       >
         {children}
