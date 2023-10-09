@@ -32,26 +32,28 @@ const Todos = memo(({ timerID, onTaskClicked }: TodosProps) => {
           Your Todo ({incompletedTodos.length}/
           {incompletedTodos.length + completedTodos.length})
         </h1>
-        <ul className="mt-4">
-          {incompletedTodos.map((todo) => (
-            <li
-              key={todo.id}
-              className="border-2 py-2 px-4 flex justify-between items-center first:rounded-tl first:rounded-tr last:rounded-bl last:rounded-br cursor-pointer hover:bg-[#eee]/[0.25]"
-              onClick={() => {
-                onTaskClicked(todo.id);
-              }}
-            >
-              <span className="font-medium text-xl">{todo.value}</span>
-              <UnfillCheckboxIcon
-                className="cursor-pointer fill-transparent hover:fill-[#eee]/[.2] transition"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleCheckTodo(todo.id, timerID);
+        <div className="mt-4">
+          <ul>
+            {incompletedTodos.map((todo) => (
+              <li
+                key={todo.id}
+                className="border-2 py-2 px-4 flex justify-between items-center first:rounded-tl first:rounded-tr last:rounded-bl last:rounded-br cursor-pointer hover:bg-[#eee]/[0.25]"
+                onClick={() => {
+                  onTaskClicked(todo.id);
                 }}
-              />
-            </li>
-          ))}
-        </ul>
+              >
+                <span className="font-medium text-xl">{todo.value}</span>
+                <UnfillCheckboxIcon
+                  className="cursor-pointer fill-transparent hover:fill-[#eee]/[.2] transition"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleCheckTodo(todo.id, timerID);
+                  }}
+                />
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
       <div className="mt-10">
         <h1 className="text-2xl font-bold">
