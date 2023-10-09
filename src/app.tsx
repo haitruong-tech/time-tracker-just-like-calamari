@@ -6,13 +6,17 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import TodosProvider from "@features/todos-v2/contexts/TodosContext";
 import { memo } from "react";
+import ModalProvider, { ModalContainer } from "./contexts/modal";
 
 const App = memo(() => {
   return (
     <TimeTrackerProvider>
       <TodosProvider>
-        <RouterProvider router={router} />
-        <ToastContainer />
+        <ModalProvider>
+          <RouterProvider router={router} />
+          <ToastContainer />
+          <ModalContainer />
+        </ModalProvider>
       </TodosProvider>
     </TimeTrackerProvider>
   );

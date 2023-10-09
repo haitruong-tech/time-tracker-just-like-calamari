@@ -1,13 +1,11 @@
 import TimeTracker from "@features/time-tracker-v2";
 import TimeTrackerErrorBoundary from "@features/time-tracker-v2/error-boundary";
 import Todos from "@features/todos-v2";
-import { memo, useState } from "react";
-import TaskDetailsModal from "src/components/Modal/task-details";
+import { memo } from "react";
 import Navbar from "src/components/navbar";
+import DragNDropProvider from "src/contexts/dragndrop";
 
 const HomePage = memo(() => {
-  const [todoID, setTodoID] = useState<null | string>(null);
-
   return (
     <div className="w-screen min-h-screen text-[#eee] p-16">
       <Navbar />
@@ -16,21 +14,11 @@ const HomePage = memo(() => {
           <TimeTracker />
         </TimeTrackerErrorBoundary>
         <div className="mt-14">
-          <Todos
-            onTaskClicked={(todoID: string) => {
-              setTodoID(todoID);
-            }}
-          />
+          <DragNDropProvider>
+            <Todos />
+          </DragNDropProvider>
         </div>
       </div>
-      {todoID != null && (
-        <TaskDetailsModal
-          todoID={todoID}
-          closeModal={() => {
-            setTodoID(null);
-          }}
-        />
-      )}
     </div>
   );
 });
