@@ -12,7 +12,7 @@ export interface ITodoActionsContext {
   handleAddTodo: (todo: AddTodoActionPayload) => void;
   handleCheckTodo: (todoID: string, timerID: string) => void;
   handleDeleteTodo: (todoID: string) => void;
-  handleSwithPosition: (sourceTodoID: string, targetTodoID: string) => void;
+  handleSwitchPosition: (sourceTodoID: string, targetTodoID: string) => void;
   editTodo: (todoID: string, value: string) => void;
 }
 

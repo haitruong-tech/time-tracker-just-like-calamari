@@ -15,7 +15,7 @@ const Modal = memo(({ content, footer, header, closeModal }: ModalProps) => {
         <header className="border-b flex items-center">
           {header}
           <RiCloseLine
-            className="text-4xl cursor-pointer"
+            className="text-4xl cursor-pointer text-[#eee]"
             onClick={closeModal}
           />
         </header>

@@ -16,7 +16,7 @@ export const TodosActionsContext = createContext<ITodoActionsContext>({
   handleAddTodo: () => {},
   handleCheckTodo: () => {},
   handleDeleteTodo: () => {},
-  handleSwithPosition: () => {},
+  handleSwitchPosition: () => {},
   editTodo: () => {},
 });
 
@@ -67,7 +67,7 @@ function TodosProvider({ children }: TodosProviderProps): JSX.Element {
           handleAddTodo,
           handleCheckTodo,
           handleDeleteTodo,
-          handleSwithPosition,
+          handleSwitchPosition: handleSwithPosition,
           editTodo,
         }}
       >
