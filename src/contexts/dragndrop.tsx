@@ -9,8 +9,8 @@ interface DragActions {
   dragStartHandler: (e: React.DragEvent<HTMLElement>, sourceID: string) => void;
   dragOverHandler: (
     e: React.DragEvent<HTMLElement>,
-    targetID: string,
-    callback: (...args: any[]) => void
+    targetID?: string,
+    callback?: (...args: any[]) => void
   ) => void;
   dropHandler: (
     e: React.DragEvent<HTMLElement>,
@@ -47,11 +47,10 @@ const DragNDropProvider = memo(({ children }: DragNDropProviderProps) => {
 
   const dragOverHandler = (
     e: React.DragEvent<HTMLElement>,
-    targetID: string,
-    callback: (...args: any[]) => void
+    targetID?: string,
+    callback?: (...args: any[]) => void
   ): void => {
     e.preventDefault();
-    callback(sourceItemID, setSourceItemID, setTargetItemID);
   };
 
   const dropHandler = (
@@ -59,6 +58,7 @@ const DragNDropProvider = memo(({ children }: DragNDropProviderProps) => {
     targetID: string,
     callback: (...args: any[]) => void
   ): void => {
+    setTargetItemID("");
     callback(sourceItemID, setSourceItemID, setTargetItemID);
   };
 

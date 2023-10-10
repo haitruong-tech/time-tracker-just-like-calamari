@@ -1,9 +1,15 @@
-import { memo, useCallback, useContext, useRef } from "react";
+import {
+  type Ref,
+  forwardRef,
+  memo,
+  useCallback,
+  useContext,
+  useRef,
+} from "react";
 import { FillCheckboxIcon, UnfillCheckboxIcon } from "src/assets/icons";
 import { type Todo } from "../types/todo";
 import { ModalActionsContext, ModalType } from "src/contexts/modal";
 import { TodosActionsContext } from "../contexts/TodosContext";
-import { TimeTrackerContext } from "@features/time-tracker-v2/contexts/TimeTrackerContext";
 import { DragNDropActionsContext } from "src/contexts/dragndrop";
 
 interface TodoItemProps {
@@ -11,10 +17,14 @@ interface TodoItemProps {
   timerID: string;
 }
 
-const TodoItem = memo(({ todo, timerID }: TodoItemProps) => {
+const TodoItem = (
+  { todo, timerID }: TodoItemProps,
+  ref: Ref<HTMLElement>
+): JSX.Element => {
   const { openModal } = useContext(ModalActionsContext);
   const { handleCheckTodo, handleSwitchPosition } =
     useContext(TodosActionsContext);
+
   const { dragStartHandler, dragOverHandler, dropHandler } = useContext(
     DragNDropActionsContext
   );
@@ -38,18 +48,15 @@ const TodoItem = memo(({ todo, timerID }: TodoItemProps) => {
         openModal({ todoID: todo.id, type: ModalType.TaskDetails });
       }}
       draggable
-      ref={() => (sourceID.current = todo.id)}
+      ref={(e) => {
+        sourceID.current = todo.id;
+        if (typeof ref === "function") ref(e);
+      }}
       onDragStart={(e) => {
         dragStartHandler(e, todo.id);
       }}
       onDragOver={(e) => {
-        dragOverHandler(
-          e,
-          todo.id,
-          (sourceItemID, setSourceItemID, setTargetItemID) => {
-            handleSwitchPosition(sourceItemID, todo.id);
-          }
-        );
+        dragOverHandler(e);
       }}
       onDrop={(e) => {
         dropHandler(e, todo.id, (sourceItemID) => {
@@ -74,15 +81,10 @@ const TodoItem = memo(({ todo, timerID }: TodoItemProps) => {
       )}
     </li>
   );
-});
+};
 
 TodoItem.displayName = "TodoItem";
 
-const TodoItemWrapper = memo((props: Omit<TodoItemProps, "timerID">) => {
-  const timerID = useContext(TimeTrackerContext).timers.at(-1)?.id ?? "";
-  return <TodoItem timerID={timerID} {...props} />;
-});
+const TodoItemForwardRef = forwardRef(TodoItem);
 
-TodoItemWrapper.displayName = "TodoItemWrapper";
-
-export default TodoItemWrapper;
+export default memo(TodoItemForwardRef);
