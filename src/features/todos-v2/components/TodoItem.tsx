@@ -69,13 +69,13 @@ const TodoItem = (
       </span>
       {todo.check && (
         <FillCheckboxIcon
-          className="cursor-pointer hover:fill-[#eee]/[0.75] fill-[#eee] transition"
+          className="cursor-pointer hover:fill-[#eee]/[0.75] fill-[#eee] transition shrink-0"
           onClick={handleCheckBoxIconClicked}
         />
       )}
       {!todo.check && (
         <UnfillCheckboxIcon
-          className="cursor-pointer fill-transparent hover:fill-[#eee]/[.2] transition"
+          className="cursor-pointer fill-transparent hover:fill-[#eee]/[.2] transition shrink-0"
           onClick={handleCheckBoxIconClicked}
         />
       )}

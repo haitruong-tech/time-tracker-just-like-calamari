@@ -33,11 +33,7 @@ const TimeTrackerProvider = memo(({ children }: TimeTrackerProviderProps) => {
   };
 
   const recordSession = (purpose: PURPOSES): void => {
-    if (
-      timers.at(-1)?.purpose === purpose ||
-      lastUpdate.current === undefined ||
-      lastUpdate.current === null
-    )
+    if (timers.at(-1)?.purpose === purpose || lastUpdate.current == null)
       return;
     dispatch({
       type: RECORD,
@@ -84,9 +80,8 @@ const TimeTrackerProvider = memo(({ children }: TimeTrackerProviderProps) => {
     return () => {
       clearInterval(intervalID);
     };
-  }, [currentDay, currentMonth, currentYear]);
+  }, []);
 
-  // return { timers, pxPerMillSecond, work, takeBreak };
   return (
     <TimeTrackerContext.Provider value={{ timers }}>
       <TimeTrackerActionsContext.Provider

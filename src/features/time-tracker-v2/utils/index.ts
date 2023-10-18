@@ -1,6 +1,7 @@
 import { LOCAL_STORAGE } from "../../../data/constants";
 import { PURPOSES } from "../constants";
 import type { Timer } from "../types/timer";
+import { v4 as uuidv4 } from "uuid";
 
 export enum MONTHS {
   JANUARY,
@@ -71,6 +72,7 @@ export const getTrackerState = (): TrackerState => {
     ) as string
   ) ?? [
     {
+      id: uuidv4(),
       startTime,
       duration: new Date().getTime() - startTime.getTime(),
       purpose: PURPOSES.BREAK,
