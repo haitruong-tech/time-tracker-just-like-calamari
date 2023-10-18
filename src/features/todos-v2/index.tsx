@@ -5,7 +5,7 @@ import AddTodo from "./components/AddTodo";
 import TodoList from "./components/TodoList";
 
 const Todos = memo(() => {
-  const todos = useContext(TodosContext);
+  const { todos } = useContext(TodosContext);
 
   const incompletedTodos = useMemo(
     () => todos.filter((todo) => !todo.check),

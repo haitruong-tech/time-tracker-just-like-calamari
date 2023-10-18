@@ -12,7 +12,7 @@ interface ModalProps {
 }
 
 const TaskDetailsModal = memo(({ closeModal, todoID }: ModalProps) => {
-  const todos = useContext(TodosContext);
+  const { todos } = useContext(TodosContext);
   const { editTodo, handleDeleteTodo } = useContext(TodosActionsContext);
   const todo = todos.find((todo) => todo.id === todoID);
   const [todoValue, setTodoValue] = useState(todo?.value ?? "");

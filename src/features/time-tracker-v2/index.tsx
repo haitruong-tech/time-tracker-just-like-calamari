@@ -6,8 +6,7 @@ import {
 } from "./contexts/TimeTrackerContext";
 import { StartIcon, StopIcon } from "src/assets/icons";
 import { PURPOSES } from "./constants";
-import { formatDate, formatHour } from "src/lib/date-fns";
-import { addDays } from "date-fns";
+import { formatDate, formatHour, addDays } from "src/lib/date-fns";
 import { formatDuration } from "./utils";
 
 const SECOND = 1000;
@@ -28,6 +27,7 @@ const TimeTracker = memo(() => {
       if (timerRef.current == null) return;
       setPxPerMillSecond(timerRef.current.offsetWidth / DAY);
     };
+    resizeCallback();
     window.addEventListener("resize", resizeCallback);
     return resizeCallback;
   }, [timerRef.current]);

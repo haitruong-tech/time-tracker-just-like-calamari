@@ -4,14 +4,14 @@ import { todosReducer } from "../reducers/todoReducer";
 import { TODO_ACTIONS } from "../constants";
 import { useImmerReducer } from "use-immer";
 import {
-  type Todo,
   type ITodoActionsContext,
   type AddTodoActionPayload,
+  type ITodosContext,
 } from "../types/todo";
 
 const { TODOS } = LOCAL_STORAGE;
 
-export const TodosContext = createContext<Todo[]>([]);
+export const TodosContext = createContext<ITodosContext>({ todos: [] });
 export const TodosActionsContext = createContext<ITodoActionsContext>({
   handleAddTodo: () => {},
   handleCheckTodo: () => {},
@@ -61,7 +61,7 @@ function TodosProvider({ children }: TodosProviderProps): JSX.Element {
   };
 
   return (
-    <TodosContext.Provider value={todos}>
+    <TodosContext.Provider value={{ todos }}>
       <TodosActionsContext.Provider
         value={{
           handleAddTodo,

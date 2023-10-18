@@ -30,6 +30,8 @@ export function timeTrackerReducer(
           duration: new Date().getTime() - currentDate.getTime(),
           purpose: timer.purpose,
         };
+        // Currently, we delete all timers every new day
+        // migrate to DB for persist storage
         timers.splice(0, timers.length, timer);
       } else timer.duration += currentDate.getTime() - action.payload;
     }

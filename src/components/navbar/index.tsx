@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { memo } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { ROUTES } from "src/routes";
 
 const Navbar = memo(() => {
   return (
@@ -21,7 +22,7 @@ const Navbar = memo(() => {
                   }
                 )
               }
-              to="/"
+              to={ROUTES.HOME}
             >
               Time Tracker
             </NavLink>
@@ -37,7 +38,7 @@ const Navbar = memo(() => {
                   }
                 )
               }
-              to="/"
+              to={ROUTES.TIME_LOG}
             >
               Time Log
             </NavLink>

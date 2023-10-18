@@ -1,7 +1,7 @@
 import { format as libFormat } from "date-fns";
 import { assertValidDate } from "src/utils";
 
-export const format = (
+export const customFormat = (
   dateString: Date | string | number,
   pattern: string
 ): string => {
@@ -21,3 +21,5 @@ export const formatDate = (dateString: Date | string): string => {
   assertValidDate(date);
   return libFormat(date, "Y/MM/dd");
 };
+
+export { addSeconds, addDays } from "date-fns";

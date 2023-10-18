@@ -8,6 +8,10 @@ interface Todo {
   revertInSessionID?: string;
 }
 
+export interface ITodosContext {
+  todos: Todo[];
+}
+
 export interface ITodoActionsContext {
   handleAddTodo: (todo: AddTodoActionPayload) => void;
   handleCheckTodo: (todoID: string, timerID: string) => void;
